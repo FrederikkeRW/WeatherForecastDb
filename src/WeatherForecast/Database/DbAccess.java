@@ -1,7 +1,11 @@
 package WeatherForecast.Database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+
 import static java.sql.DriverManager.getConnection;
 
 public class DbAccess {
@@ -37,4 +41,42 @@ public class DbAccess {
             e.printStackTrace();
         }
     }
+
+    /*
+    Get temp values from tariff, based on DMI data
+     */
+
+    public static HashMap<String,String>  getTempValues (int dmiTemp){
+        HashMap<String,String> result = new HashMap<>();
+
+        String sql =  "SELECT * FROM TEMP_TARIFF WHERE TEMP_FROM <= ? AND TEMP_TO >= ?";
+         Connection conn = openDBConnection();
+         PreparedStatement pstmt = null;
+             try {
+                 pstmt = conn.prepareStatement(sql);
+             } catch (SQLException e) {
+                 e.printStackTrace();
+             }
+             try {
+                 pstmt.setInt(1,  dmiTemp);
+                 pstmt.setInt(2,  dmiTemp);
+             } catch (SQLException e) {
+                 e.printStackTrace();
+             }
+             ResultSet rs = null;
+             try {
+                 rs = pstmt.executeQuery();
+
+                 result.put("TEMP_VALUE",rs.getString("TEMP_VALUE"));
+                 result.put("TEMP_TEXT",rs.getString("TEMP_TEXT"));
+                 result.put("TEMP_DESCRIPTION",rs.getString("TEMP_DESCRIPTION"));
+
+             } catch (SQLException e) {
+                 e.printStackTrace();
+             }
+
+             closeDbConnection(conn);
+             return result;
+    }
+
 }
