@@ -2,5 +2,10 @@
 /workspace.xml
 
 # Datasource local storage ignored files
+<<<<<<< Updated upstream
 /dataSources.local.xml
 /dataSources/
+=======
+/dataSources/
+/dataSources.local.xml
+>>>>>>> Stashed changes
