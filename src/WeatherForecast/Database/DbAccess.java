@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static java.sql.DriverManager.getConnection;
@@ -116,5 +117,60 @@ public class DbAccess {
         closeDbConnection(conn);
         return result;
     }
+
+    public static ArrayList<HashMap <String, Object>> getGames (String windValue, String tempValue, String snowValue, String rainValue){
+        //System.out.println("getGames. windValue: "+windValue+", tempValue: "+tempValue+", snowValue: "+snowValue+", rainValue: " +rainValue);
+        ArrayList<HashMap <String, Object>> result = new ArrayList<HashMap<String, Object>>();
+
+        String sql = "SELECT GAME_NAME, GAME_DESCRIPTION, WARNING FROM GAME_TARIFF " +
+                "WHERE " +
+                "    WIND_VALUE_FROM <= ? AND WIND_VALUE_TO >= ? " +
+                "    AND " +
+                "    TEMP_VALUE_FROM <= ? AND TEMP_VALUE_TO >= ? " +
+                "    AND " +
+                "    SNOW_VALUE_FROM <= ? AND SNOW_VALUE_TO >= ? " +
+                "    AND " +
+                "    RAIN_VALUE_FROM <= ? AND RAIN_VALUE_TO >= ? ";
+
+        Connection conn = openDBConnection();
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            pstmt.setString(1,  windValue);
+            pstmt.setString(2,  windValue);
+            pstmt.setString(3,  tempValue);
+            pstmt.setString(4,  tempValue);
+            pstmt.setString(5,  snowValue);
+            pstmt.setString(6,  snowValue);
+            pstmt.setString(7,  rainValue);
+            pstmt.setString(8,  rainValue);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ResultSet rs = null;
+        try {
+            rs = pstmt.executeQuery();
+
+            while (rs != null && rs.next()){
+                HashMap<String, Object> values = new HashMap<String, Object>();
+                values.put("GAME_NAME", rs.getString("GAME_NAME"));
+                values.put("GAME_DESCRIPTION", rs.getString("GAME_DESCRIPTION"));
+                values.put("WARNING", rs.getBoolean("WARNING"));
+                result.add(values);
+
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        closeDbConnection(conn);
+        return result;
+
+    }
+
 
 }

@@ -26,7 +26,7 @@ public class DMI_Simulator {
         HashMap<WeatherTypes,Object> evening = new HashMap<WeatherTypes,Object>();
 
         morning.put(WeatherTypes.Temp,"18");
-        morning.put(WeatherTypes.Wind,"4");
+        morning.put(WeatherTypes.Wind,"2");
         morning.put(WeatherTypes.Cloudiness,CloudinessTypes.MOSTLY_CLOUDY);
         morning.put(WeatherTypes.Rain, "0");
         morning.put(WeatherTypes.Snow, "0");
@@ -41,7 +41,7 @@ public class DMI_Simulator {
 
         evening.put(WeatherTypes.Temp,"14");
         evening.put(WeatherTypes.Wind,"4");
-        evening.put(WeatherTypes.Cloudiness,"Partly Cloudy");
+        evening.put(WeatherTypes.Cloudiness, CloudinessTypes.SUNNY);
         evening.put(WeatherTypes.Rain, "0");
         evening.put(WeatherTypes.Snow, "0");
         dayForcasts.add(evening); // cell nr 2
