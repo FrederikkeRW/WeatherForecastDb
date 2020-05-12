@@ -71,6 +71,36 @@ public class DbAccess {
         return getValues(dmiTemp, sql);
     }
 
+    public static ArrayList<HashMap <String, Object>> getGameValues (String windValue, String tempValue, String snowValue, String rainValue){
+        String sql = "SELECT GAME_NAME NAME, GAME_DESCRIPTION DESCRIPTION, WARNING WARNING FROM GAME_TARIFF " +
+                " WHERE " +
+                "    WIND_VALUE_FROM <= ? AND WIND_VALUE_TO >= ? " +
+                "    AND " +
+                "    TEMP_VALUE_FROM <= ? AND TEMP_VALUE_TO >= ? " +
+                "    AND " +
+                "    SNOW_VALUE_FROM <= ? AND SNOW_VALUE_TO >= ? " +
+                "    AND " +
+                "    RAIN_VALUE_FROM <= ? AND RAIN_VALUE_TO >= ? ";
+
+        return getGamesAndCloth(windValue, tempValue, snowValue, rainValue, sql);
+
+    }
+
+    public static ArrayList<HashMap <String, Object>> getClothValues (String windValue, String tempValue, String snowValue, String rainValue){
+        String sql = "SELECT CLOTH_NAME NAME, CLOTH_DESCRIPTION DESCRIPTION FROM CLOTH_TARIFF " +
+                " WHERE " +
+                "    WIND_VALUE_FROM <= ? AND WIND_VALUE_TO >= ? " +
+                "    AND " +
+                "    TEMP_VALUE_FROM <= ? AND TEMP_VALUE_TO >= ? " +
+                "    AND " +
+                "    SNOW_VALUE_FROM <= ? AND SNOW_VALUE_TO >= ? " +
+                "    AND " +
+                " RAIN_VALUE_FROM <= ? AND RAIN_VALUE_TO >= ?";
+
+        return getGamesAndCloth(windValue, tempValue, snowValue, rainValue, sql);
+    }
+
+
 
     private static HashMap<String,String> getValues(int dmiTemp, String sql){
         HashMap<String,String> result = new HashMap<>();
@@ -118,10 +148,12 @@ public class DbAccess {
         return result;
     }
 
-    public static ArrayList<HashMap <String, Object>> getGames (String windValue, String tempValue, String snowValue, String rainValue){
+
+
+    public static ArrayList<HashMap <String, Object>> getGamesAndCloth (String windValue, String tempValue, String snowValue, String rainValue, String sql){
         //System.out.println("getGames. windValue: "+windValue+", tempValue: "+tempValue+", snowValue: "+snowValue+", rainValue: " +rainValue);
         ArrayList<HashMap <String, Object>> result = new ArrayList<HashMap<String, Object>>();
-
+/*
         String sql = "SELECT GAME_NAME, GAME_DESCRIPTION, WARNING FROM GAME_TARIFF " +
                 "WHERE " +
                 "    WIND_VALUE_FROM <= ? AND WIND_VALUE_TO >= ? " +
@@ -132,6 +164,7 @@ public class DbAccess {
                 "    AND " +
                 "    RAIN_VALUE_FROM <= ? AND RAIN_VALUE_TO >= ? ";
 
+ */
         Connection conn = openDBConnection();
         PreparedStatement pstmt = null;
         try {
@@ -158,12 +191,17 @@ public class DbAccess {
 
             while (rs != null && rs.next()){
                 HashMap<String, Object> values = new HashMap<String, Object>();
-                values.put("GAME_NAME", rs.getString("GAME_NAME"));
-                values.put("GAME_DESCRIPTION", rs.getString("GAME_DESCRIPTION"));
-                values.put("WARNING", rs.getBoolean("WARNING"));
-                result.add(values);
+                values.put("NAME", rs.getString("NAME"));
+                values.put("DESCRIPTION", rs.getString("DESCRIPTION"));
+                //values.put("WARNING", rs.getBoolean("WARNING"));
 
+                if (rs.getMetaData().getColumnCount() == 3) {
+                    values.put("WARNING",rs.getBoolean("WARNING"));
+                }
+
+                result.add(values);
             }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

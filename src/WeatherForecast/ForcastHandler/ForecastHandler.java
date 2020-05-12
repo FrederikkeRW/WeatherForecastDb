@@ -79,9 +79,16 @@ public class ForecastHandler {
              * We got all the values from the database
              * Now we can get game suggestions based on these values
              */
-            ArrayList<HashMap<String, Object>> morningGames = DbAccess.getGames(resultWindMorning.get("VALUE"), resultTempMorning.get("VALUE"), resultSnowMorning.get("VALUE"), resultRainMorning.get("VALUE"));
-            ArrayList<HashMap<String, Object>> afternoonGames = DbAccess.getGames(resultWindAfternoon.get("VALUE"), resultTempAfternoon.get("VALUE"), resultSnowAfternoon.get("VALUE"), resultRainAfternoon.get("VALUE"));
-            ArrayList<HashMap<String, Object>> eveningGames = DbAccess.getGames(resultWindEvening.get("VALUE"), resultTempEvening.get("VALUE"), resultSnowEvening.get("VALUE"), resultRainEvening.get("VALUE"));
+            ArrayList<HashMap<String, Object>> morningGames = DbAccess.getGameValues(resultWindMorning.get("VALUE"), resultTempMorning.get("VALUE"), resultSnowMorning.get("VALUE"), resultRainMorning.get("VALUE"));
+            ArrayList<HashMap<String, Object>> afternoonGames = DbAccess.getGameValues(resultWindAfternoon.get("VALUE"), resultTempAfternoon.get("VALUE"), resultSnowAfternoon.get("VALUE"), resultRainAfternoon.get("VALUE"));
+            ArrayList<HashMap<String, Object>> eveningGames = DbAccess.getGameValues(resultWindEvening.get("VALUE"), resultTempEvening.get("VALUE"), resultSnowEvening.get("VALUE"), resultRainEvening.get("VALUE"));
+
+
+            ArrayList<HashMap<String, Object>> morningCloth = DbAccess.getClothValues(resultWindMorning.get("VALUE"), resultTempMorning.get("VALUE"), resultSnowMorning.get("VALUE"), resultRainMorning.get("VALUE"));
+            ArrayList<HashMap<String, Object>> afternoonCloth = DbAccess.getClothValues(resultWindAfternoon.get("VALUE"), resultTempAfternoon.get("VALUE"), resultSnowAfternoon.get("VALUE"), resultRainAfternoon.get("VALUE"));
+            ArrayList<HashMap<String, Object>> eveningCloth = DbAccess.getClothValues(resultWindEvening.get("VALUE"), resultTempEvening.get("VALUE"), resultSnowEvening.get("VALUE"), resultRainEvening.get("VALUE"));
+
+
 
             /**
             ArrayList = Morning, afternoon and evening.
@@ -138,13 +145,16 @@ public class ForecastHandler {
             values = gameSuggestionHandler(morningGames);
             tableTypesMorning.put(TariffTableTypes.GAME_TARIFF,values);
 
+            values = clothSuggestionHandler(morningCloth);
+            tableTypesMorning.put(TariffTableTypes.CLOTH_TARIFF,values);
+
 
             /**
              * Putting temp, wind, rain, snow, cloudiness afternoon values inside Hashmap
              */
             values = new HashMap<String, String>();
             values.put("TEMP", tempAfternoon);
-            values.put("TEMP_VALUE",resultTempAfternoon.get("VALUE"));
+            //values.put("TEMP_VALUE",resultTempAfternoon.get("VALUE"));
             values.put("TEMP_TEXT",resultTempAfternoon.get("TEXT"));
             values.put("TEMP_DESCRIPTION",resultTempAfternoon.get("DESCRIPTION"));
             tableTypesAfternoon.put(TariffTableTypes.TEMP_TARIFF,values);
@@ -152,7 +162,7 @@ public class ForecastHandler {
 
             values = new HashMap<String, String>();
             values.put("WIND", windAfternoon);
-            values.put("WIND_VALUE",resultWindAfternoon.get("VALUE"));
+            //values.put("WIND_VALUE",resultWindAfternoon.get("VALUE"));
             values.put("WIND_TEXT",resultWindAfternoon.get("TEXT"));
             values.put("WIND_DESCRIPTION",resultWindAfternoon.get("DESCRIPTION"));
             tableTypesAfternoon.put(TariffTableTypes.WIND_TARIFF,values);
@@ -160,20 +170,20 @@ public class ForecastHandler {
 
             values = new HashMap<String, String>();
             values.put("RAIN", rainAfternoon);
-            values.put("RAIN_VALUE",resultRainAfternoon.get("VALUE"));
+            //values.put("RAIN_VALUE",resultRainAfternoon.get("VALUE"));
             values.put("RAIN_TEXT",resultRainAfternoon.get("TEXT"));
             values.put("RAIN_DESCRIPTION",resultRainAfternoon.get("DESCRIPTION"));
             tableTypesAfternoon.put(TariffTableTypes.RAIN_TARIFF,values);
 
             values = new HashMap<String, String>();
             values.put("SNOW", snowAfternoon);
-            values.put("SNOW_VALUE",resultSnowAfternoon.get("VALUE"));
+            //values.put("SNOW_VALUE",resultSnowAfternoon.get("VALUE"));
             values.put("SNOW_TEXT",resultSnowAfternoon.get("TEXT"));
             values.put("SNOW_DESCRIPTION",resultSnowAfternoon.get("DESCRIPTION"));
             tableTypesAfternoon.put(TariffTableTypes.SNOW_TARIFF,values);
 
             values = new HashMap<String, String>();
-            values.put("CLOUDINESS_VALUE", cloudinessAfternoon.value);
+            //values.put("CLOUDINESS_VALUE", cloudinessAfternoon.value);
             values.put("CLOUDINESS_TEXT", cloudinessAfternoon.text);
             values.put("CLOUDINESS_DESCRIPTION", cloudinessAfternoon.description);
             tableTypesAfternoon.put(TariffTableTypes.CLOUDINESS_TARIFF,values);
@@ -181,45 +191,51 @@ public class ForecastHandler {
             values = gameSuggestionHandler(afternoonGames);
             tableTypesAfternoon.put(TariffTableTypes.GAME_TARIFF,values);
 
+            values = clothSuggestionHandler(afternoonCloth);
+            tableTypesAfternoon.put(TariffTableTypes.CLOTH_TARIFF,values);
+
             /**
              * Putting temp, wind, rain, cloudiness evening values inside Hashmap
              */
             values = new HashMap<String, String>();
             values.put("TEMP", tempEvening);
-            values.put("TEMP_VALUE",resultTempEvening.get("VALUE"));
+            //values.put("TEMP_VALUE",resultTempEvening.get("VALUE"));
             values.put("TEMP_TEXT",resultTempEvening.get("TEXT"));
             values.put("TEMP_DESCRIPTION",resultTempEvening.get("DESCRIPTION"));
             tableTypesEvening.put(TariffTableTypes.TEMP_TARIFF,values);
 
             values = new HashMap<String, String>();
             values.put("WIND", windEvening);
-            values.put("WIND_VALUE",resultWindEvening.get("VALUE"));
+            //values.put("WIND_VALUE",resultWindEvening.get("VALUE"));
             values.put("WIND_TEXT",resultWindEvening.get("TEXT"));
             values.put("WIND_DESCRIPTION",resultWindEvening.get("DESCRIPTION"));
             tableTypesEvening.put(TariffTableTypes.WIND_TARIFF,values);
 
             values = new HashMap<String, String>();
             values.put("RAIN", rainEvening);
-            values.put("RAIN_VALUE",resultRainEvening.get("VALUE"));
+            //values.put("RAIN_VALUE",resultRainEvening.get("VALUE"));
             values.put("RAIN_TEXT",resultRainEvening.get("TEXT"));
             values.put("RAIN_DESCRIPTION",resultRainEvening.get("DESCRIPTION"));
             tableTypesEvening.put(TariffTableTypes.RAIN_TARIFF,values);
 
             values = new HashMap<String, String>();
             values.put("SNOW", snowEvening);
-            values.put("SNOW_VALUE",resultSnowEvening.get("VALUE"));
+            //values.put("SNOW_VALUE",resultSnowEvening.get("VALUE"));
             values.put("SNOW_TEXT",resultSnowEvening.get("TEXT"));
             values.put("SNOW_DESCRIPTION",resultSnowEvening.get("DESCRIPTION"));
             tableTypesEvening.put(TariffTableTypes.SNOW_TARIFF,values);
 
             values = new HashMap<String, String>();
-            values.put("CLOUDINESS_VALUE", cloudinessEvening.value);
+            //values.put("CLOUDINESS_VALUE", cloudinessEvening.value);
             values.put("CLOUDINESS_TEXT", cloudinessEvening.text);
             values.put("CLOUDINESS_DESCRIPTION", cloudinessEvening.description);
             tableTypesEvening.put(TariffTableTypes.CLOUDINESS_TARIFF,values);
 
             values = gameSuggestionHandler(eveningGames);
             tableTypesEvening.put(TariffTableTypes.GAME_TARIFF,values);
+
+            values = clothSuggestionHandler(eveningCloth);
+            tableTypesEvening.put(TariffTableTypes.CLOTH_TARIFF,values);
 
             /**
              * Adding the morning values from tableTypesMorning, as place 0, 1 and 2 in the array: dayForcasts
@@ -237,6 +253,8 @@ public class ForecastHandler {
 
         return fourDays;
     }
+
+
     private static HashMap<String,String> gameSuggestionHandler (ArrayList<HashMap<String, Object>> gameList){
         HashMap<String, String> gameSuggestion = new HashMap<String, String>();
 
@@ -253,8 +271,8 @@ public class ForecastHandler {
         for (int i = 0; i < gameList.size(); i++){
             HashMap<String, Object> row = gameList.get(i);
             if ((boolean)row.get("WARNING")){
-                gameSuggestion.put("GAME_NAME" , row.get("GAME_NAME").toString());
-                gameSuggestion.put("GAME_DESCRIPTION", row.get("GAME_DESCRIPTION").toString());
+                gameSuggestion.put("GAME_NAME" , row.get("NAME").toString());
+                gameSuggestion.put("GAME_DESCRIPTION", row.get("DESCRIPTION").toString());
                 return gameSuggestion;
             }
         }
@@ -263,9 +281,33 @@ public class ForecastHandler {
          */
         Random r = new Random();
         int randomGame = r.nextInt(gameList.size());
-        gameSuggestion.put("GAME_NAME", gameList.get(randomGame).get("GAME_NAME").toString());
-        gameSuggestion.put("GAME_DESCRIPTION", gameList.get(randomGame).get("GAME_DESCRIPTION").toString());
+        gameSuggestion.put("GAME_NAME", gameList.get(randomGame).get("NAME").toString());
+        gameSuggestion.put("GAME_DESCRIPTION", gameList.get(randomGame).get("DESCRIPTION").toString());
 
         return gameSuggestion;
     }
+
+    private static HashMap<String, String> clothSuggestionHandler (ArrayList<HashMap<String, Object>> clothList){
+        HashMap<String, String> clothSuggestion = new HashMap<String, String>();
+
+        /**
+         * If there is no cloth,
+         * Return empty map.
+         */
+
+        if (clothList.isEmpty()){
+            return clothSuggestion;
+        }
+
+        /**
+         * Return random cloth suggestion.
+         */
+        Random r = new Random();
+        int randomCloth = r.nextInt(clothList.size());
+        clothSuggestion.put("CLOTH_NAME",clothList.get(randomCloth).get("NAME").toString());
+        clothSuggestion.put("CLOTH_DESCRIPTION", clothList.get(randomCloth).get("DESCRIPTION").toString());
+
+        return clothSuggestion;
+    }
+
 }
