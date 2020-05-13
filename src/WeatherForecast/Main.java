@@ -20,7 +20,10 @@ public class Main {
         */
 
         ArrayList fourDaysWeatherForecast = ForecastHandler.fourDaysWeatherForecast();
-        System.out.println("Four days: " + fourDaysWeatherForecast);
+        for (int i = 0; i < fourDaysWeatherForecast.size(); i++){
+            System.out.println("Day "+ i +": "+ fourDaysWeatherForecast.get(i));
+        }
+
 
         /**
          * Tells if there is a connection or not, to the database
