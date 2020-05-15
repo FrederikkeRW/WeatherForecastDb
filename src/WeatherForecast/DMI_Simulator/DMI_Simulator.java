@@ -21,10 +21,13 @@ public class DMI_Simulator {
         ArrayList<ArrayList> fourDays = new ArrayList<ArrayList>();
 
         //fourDays.add(summerDay());
+        //fourDays.add(summerDayRandom());
+        //fourDays.add(summerDayRandom());
+        //fourDays.add(summerDayRandom());
         fourDays.add(summerDayRandom());
-        fourDays.add(summerDayRandom());
-        fourDays.add(summerDayRandom());
-        fourDays.add(summerDayRandom());
+        fourDays.add(autumnDayRandom());
+        fourDays.add(winterDayRandom());
+        fourDays.add(springDayRandom());
 
         return fourDays;
     }
@@ -45,16 +48,16 @@ public class DMI_Simulator {
     }
 
      */
-    private static CloudinessTypes cloudHandler(boolean rain) {
+    private static CloudinessTypes cloudHandler(boolean rainOrSnow) {
 
         Random random = new Random();
-       // boolean rain = random.nextBoolean();
+
         /**
          * Default cloudiness type is PARTLY_CLOUDY
          */
         CloudinessTypes cloudinessType = CloudinessTypes.PARTLY_CLOUDY;
         int cloudType = random.nextInt(2);
-        if (rain) {
+        if (rainOrSnow) {
             switch (cloudType) {
                 case 0:
                     cloudinessType = CloudinessTypes.CLOUDY;
@@ -86,9 +89,11 @@ public class DMI_Simulator {
     private static ArrayList<Map<WeatherTypes,Object>> summerDayRandom(){
         ArrayList<Map<WeatherTypes,Object>> day = new ArrayList<Map<WeatherTypes,Object>>();
         Random random = new Random();
-
-
+        /**
+         * 50/50 if it rains or not - either true or false
+         */
         boolean rain = random.nextBoolean();
+
         Integer rainMM = Integer.valueOf(0);
         if (rain){
             // It can rain from 1-11 mm
@@ -101,21 +106,166 @@ public class DMI_Simulator {
          */
         Integer temp = random.nextInt(10) + 10;
 
+        /**
+         * The wind can blow up till 10 ms, all summer
+         */
         Integer wind = random.nextInt(10);
 
 
         HashMap<WeatherTypes,Object> morning = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(morning); // morning is added at index 0
+
         /**
          * On a summer day afternoon, the temp can be between 10-40 degrees
          */
         temp = random.nextInt(30) + 10;
         HashMap<WeatherTypes,Object> afternoon = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(afternoon); // afternoon is added at index 1
+
         /**
          * On a summer day evening, the temp can be between 10-25 degrees
          */
         temp = random.nextInt(15) + 10;
+        HashMap<WeatherTypes,Object> evening = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
+        day.add(evening); // evening is added at index 2
+
+        return day;
+    }
+
+    private static ArrayList<Map<WeatherTypes, Object>> autumnDayRandom(){
+        ArrayList<Map<WeatherTypes, Object>> day = new ArrayList<Map<WeatherTypes, Object>>();
+        Random random = new Random();
+
+        /**
+         * 50/50 if it rains or not - either true or false
+         */
+        Boolean rain = random.nextBoolean();
+
+        Integer rainMM = Integer.valueOf(0);
+        if (rain){
+            // It can rain from 1-11 mm
+            rainMM = random.nextInt(10) + 1;
+        }
+        CloudinessTypes cloudinessType = cloudHandler(rain);
+
+        /**
+         * On a autumn day morning, the temp can be between 5-15 degrees
+         */
+        Integer temp = random.nextInt(10) + 5;
+
+        /**
+         * The wind can blow up till 10 ms, all autumn
+         */
+        Integer wind = random.nextInt(10);
+
+        HashMap<WeatherTypes,Object> morning = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
+        day.add(morning); // morning is added at index 0
+
+        /**
+         * On a autumn day afternoon, the temp can be between 8-15 degrees
+         */
+        temp = random.nextInt(7) + 8;
+        HashMap<WeatherTypes,Object> afternoon = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
+        day.add(afternoon); // afternoon is added at index 1
+
+        /**
+         * On a autumn day evening, the temp can be between 5-10 degrees
+         */
+        temp = random.nextInt(5) + 5;
+        HashMap<WeatherTypes,Object> evening = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
+        day.add(evening); // evening is added at index 2
+
+
+        return day;
+    }
+
+    private static ArrayList<Map<WeatherTypes, Object>> winterDayRandom(){
+        ArrayList<Map<WeatherTypes, Object>> day = new ArrayList<Map<WeatherTypes, Object>>();
+        Random random = new Random();
+        /**
+         * 50/50 if it snows or not - either true or false
+         */
+        Boolean snow = random.nextBoolean();
+
+        Integer snowCM = Integer.valueOf(0);
+        if (snow){
+            // It can snow from 1-20 cm
+            snowCM = random.nextInt(19) + 1;
+        }
+        CloudinessTypes cloudinessType = cloudHandler(snow);
+
+        /**
+         * On a winter day morning, the temp can be between -10 - 5 degrees
+         */
+        Integer temp = random.nextInt(15) - 10;
+
+        /**
+         * The wind can blow up till 10 ms, all winter
+         */
+        Integer wind = random.nextInt(10);
+
+        HashMap<WeatherTypes,Object> morning = daySection(temp.toString(), wind.toString(), cloudinessType, "0", snowCM.toString());
+        day.add(morning); // morning is added at index 0
+
+        /**
+         * On a winter day afternoon, the temp can be between -5 - 5 degrees
+         */
+        temp = random.nextInt(10) - 5;
+        HashMap<WeatherTypes,Object> afternoon = daySection(temp.toString(), wind.toString(), cloudinessType, "0", snowCM.toString());
+        day.add(afternoon); // afternoon is added at index 1
+
+        /**
+         * On a winter day evening, the temp can be between -10 - 4 degrees
+         */
+        temp = random.nextInt(14) - 10;
+        HashMap<WeatherTypes,Object> evening = daySection(temp.toString(), wind.toString(), cloudinessType, "0", snowCM.toString());
+        day.add(evening); // evening is added at index 2
+
+
+        return day;
+    }
+
+
+    private static ArrayList<Map<WeatherTypes,Object>> springDayRandom(){
+        ArrayList<Map<WeatherTypes,Object>> day = new ArrayList<Map<WeatherTypes,Object>>();
+        Random random = new Random();
+        /**
+         * 50/50 if it rains or not - either true or false
+         */
+        boolean rain = random.nextBoolean();
+
+        Integer rainMM = Integer.valueOf(0);
+        if (rain){
+            // It can rain from 1-11 mm
+            rainMM = random.nextInt(10) + 1;
+        }
+        CloudinessTypes cloudinessType = cloudHandler(rain);
+
+        /**
+         * On a spring day morning, the temp can be between 6 - 16 degrees
+         */
+        Integer temp = random.nextInt(10) + 6;
+
+        /**
+         * The wind can blow up till 10 ms, all summer
+         */
+        Integer wind = random.nextInt(10);
+
+
+        HashMap<WeatherTypes,Object> morning = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
+        day.add(morning); // morning is added at index 0
+
+        /**
+         * On a spring day afternoon, the temp can be between 6 - 18 degrees
+         */
+        temp = random.nextInt(12) + 6;
+        HashMap<WeatherTypes,Object> afternoon = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
+        day.add(afternoon); // afternoon is added at index 1
+
+        /**
+         * On a spring day evening, the temp can be between 6 - 16 degrees
+         */
+        temp = random.nextInt(10) + 6;
         HashMap<WeatherTypes,Object> evening = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(evening); // evening is added at index 2
 
