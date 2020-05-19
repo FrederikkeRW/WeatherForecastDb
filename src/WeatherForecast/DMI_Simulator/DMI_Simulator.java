@@ -96,8 +96,10 @@ public class DMI_Simulator {
 
         Integer rainMM = Integer.valueOf(0);
         if (rain){
-            // It can rain from 1-11 mm
-            rainMM = random.nextInt(10) + 1;
+            /**
+             * On a summer day morning, it can rain from up to 8 mm
+             */
+            rainMM = random.nextInt(8);
         }
         CloudinessTypes cloudinessType = cloudHandler(rain);
 
@@ -107,18 +109,35 @@ public class DMI_Simulator {
         Integer temp = random.nextInt(10) + 10;
 
         /**
-         * The wind can blow up till 10 ms, all summer
+         * On a summer morning, the wind can blow up till 5 ms
          */
-        Integer wind = random.nextInt(10);
+        Integer wind = random.nextInt(5);
 
-
+/**
+ * SUMMER DAY MORNING
+ */
         HashMap<WeatherTypes,Object> morning = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(morning); // morning is added at index 0
 
         /**
-         * On a summer day afternoon, the temp can be between 10-40 degrees
+         * On a summer day afternoon, the temp can be between 14-35 degrees
          */
-        temp = random.nextInt(30) + 10;
+        temp = random.nextInt(21) + 14;
+
+        /**
+         * On a summer afternoon, the wind can blow up till 11 ms
+         */
+        wind = random.nextInt(11);
+
+        /**
+         * On a summer day afternoon, it can rain up to 11 mm
+         */
+        if (rain){
+            rainMM = random.nextInt(11);
+        }
+/**
+ * SUMMER DAY AFTERNOON
+ */
         HashMap<WeatherTypes,Object> afternoon = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(afternoon); // afternoon is added at index 1
 
@@ -126,11 +145,29 @@ public class DMI_Simulator {
          * On a summer day evening, the temp can be between 10-25 degrees
          */
         temp = random.nextInt(15) + 10;
+
+        /**
+         * On a summer evening, the wind can blow up till 5 ms
+         */
+        wind = random.nextInt(5);
+
+        /**
+         * On a summer day evening, it can rain up to 11 mm
+         */
+        if (rain){
+            rainMM = random.nextInt(10);
+        }
+/**
+ * SUMMER DAY EVENING
+ */
         HashMap<WeatherTypes,Object> evening = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(evening); // evening is added at index 2
 
         return day;
     }
+
+
+
 
     private static ArrayList<Map<WeatherTypes, Object>> autumnDayRandom(){
         ArrayList<Map<WeatherTypes, Object>> day = new ArrayList<Map<WeatherTypes, Object>>();
@@ -143,8 +180,10 @@ public class DMI_Simulator {
 
         Integer rainMM = Integer.valueOf(0);
         if (rain){
-            // It can rain from 1-11 mm
-            rainMM = random.nextInt(10) + 1;
+            /**
+             * On a autumn day morning, it can rain up to 8 mm
+             */
+            rainMM = random.nextInt(8);
         }
         CloudinessTypes cloudinessType = cloudHandler(rain);
 
@@ -154,10 +193,12 @@ public class DMI_Simulator {
         Integer temp = random.nextInt(10) + 5;
 
         /**
-         * The wind can blow up till 10 ms, all autumn
+         * On a autumn morning, the wind can blow up till 5 ms
          */
-        Integer wind = random.nextInt(10);
-
+        Integer wind = random.nextInt(5);
+/**
+ * AUTUMN DAY MORNING
+ */
         HashMap<WeatherTypes,Object> morning = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(morning); // morning is added at index 0
 
@@ -165,6 +206,21 @@ public class DMI_Simulator {
          * On a autumn day afternoon, the temp can be between 8-15 degrees
          */
         temp = random.nextInt(7) + 8;
+
+        /**
+         * On a autumn day afternoon, the wind can blow up till 8 ms
+         */
+        wind = random.nextInt(8);
+
+        /**
+         * On a autumn day afternoon, it can rain up to 6 mm
+         */
+        if (rain){
+            rainMM = random.nextInt(6);
+        }
+/**
+ * AUTUMN DAY AFTERNOON
+ */
         HashMap<WeatherTypes,Object> afternoon = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(afternoon); // afternoon is added at index 1
 
@@ -172,6 +228,21 @@ public class DMI_Simulator {
          * On a autumn day evening, the temp can be between 5-10 degrees
          */
         temp = random.nextInt(5) + 5;
+
+        /**
+         * On a autumn day evening, the wind can blow up till 11 ms
+         */
+        wind = random.nextInt(11);
+
+        /**
+         * On a autumn day evening, it can rain up to 11 mm
+         */
+        if (rain){
+            rainMM = random.nextInt(11);
+        }
+/**
+ * AUTUMN DAY EVENING
+ */
         HashMap<WeatherTypes,Object> evening = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(evening); // evening is added at index 2
 
@@ -189,8 +260,10 @@ public class DMI_Simulator {
 
         Integer snowCM = Integer.valueOf(0);
         if (snow){
-            // It can snow from 1-20 cm
-            snowCM = random.nextInt(19) + 1;
+            /**
+             * On a winter day morning, it can snow up to 4 cm
+             */
+            snowCM = random.nextInt(4);
         }
         CloudinessTypes cloudinessType = cloudHandler(snow);
 
@@ -200,10 +273,12 @@ public class DMI_Simulator {
         Integer temp = random.nextInt(15) - 10;
 
         /**
-         * The wind can blow up till 10 ms, all winter
+         * On a winter day morning, the wind can blow up till 8 ms
          */
-        Integer wind = random.nextInt(10);
-
+        Integer wind = random.nextInt(8);
+/**
+ * WINTER DAY MORNING
+ */
         HashMap<WeatherTypes,Object> morning = daySection(temp.toString(), wind.toString(), cloudinessType, "0", snowCM.toString());
         day.add(morning); // morning is added at index 0
 
@@ -211,6 +286,21 @@ public class DMI_Simulator {
          * On a winter day afternoon, the temp can be between -5 - 5 degrees
          */
         temp = random.nextInt(10) - 5;
+
+        /**
+         * On a winter day afternoon, the wind can blow up till 10 ms
+         */
+        wind = random.nextInt(10);
+
+        /**
+         * On a winter day afternoon, it can snow up to 9 cm
+         */
+        if (snow){
+            snowCM = random.nextInt(9);
+        }
+/**
+ * WINTER DAY AFTERNOON
+ */
         HashMap<WeatherTypes,Object> afternoon = daySection(temp.toString(), wind.toString(), cloudinessType, "0", snowCM.toString());
         day.add(afternoon); // afternoon is added at index 1
 
@@ -218,12 +308,29 @@ public class DMI_Simulator {
          * On a winter day evening, the temp can be between -10 - 4 degrees
          */
         temp = random.nextInt(14) - 10;
+
+        /**
+         * On a winter day afternoon, the wind can blow up till 12 ms
+         */
+        wind = random.nextInt(12);
+
+        /**
+         * On a winter day afternoon, it can snow up to 3 cm
+         */
+        if (snow){
+            snowCM = random.nextInt(3);
+        }
+/**
+ * WINTER DAY EVENING
+ */
         HashMap<WeatherTypes,Object> evening = daySection(temp.toString(), wind.toString(), cloudinessType, "0", snowCM.toString());
         day.add(evening); // evening is added at index 2
 
 
         return day;
     }
+
+
 
 
     private static ArrayList<Map<WeatherTypes,Object>> springDayRandom(){
@@ -236,8 +343,10 @@ public class DMI_Simulator {
 
         Integer rainMM = Integer.valueOf(0);
         if (rain){
-            // It can rain from 1-11 mm
-            rainMM = random.nextInt(10) + 1;
+            /**
+             * On a spring day morning. it can rain up to 9 mm
+             */
+            rainMM = random.nextInt(9);
         }
         CloudinessTypes cloudinessType = cloudHandler(rain);
 
@@ -247,11 +356,13 @@ public class DMI_Simulator {
         Integer temp = random.nextInt(10) + 6;
 
         /**
-         * The wind can blow up till 10 ms, all summer
+         * On a spring day morning, the wind can blow up till 5 ms
          */
-        Integer wind = random.nextInt(10);
+        Integer wind = random.nextInt(5);
 
-
+/**
+ * SPRING DAY MORNING
+ */
         HashMap<WeatherTypes,Object> morning = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(morning); // morning is added at index 0
 
@@ -259,6 +370,21 @@ public class DMI_Simulator {
          * On a spring day afternoon, the temp can be between 6 - 18 degrees
          */
         temp = random.nextInt(12) + 6;
+
+        /**
+         * On a spring day afternoon, the wind can blow up till 10 ms
+         */
+        wind = random.nextInt(10);
+
+        /**
+         * On a spring day afternoon. it can rain up to 11 mm
+         */
+        if (rain){
+            rainMM = random.nextInt(11);
+        }
+/**
+ * SPRING DAT AFTERNOON
+ */
         HashMap<WeatherTypes,Object> afternoon = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(afternoon); // afternoon is added at index 1
 
@@ -266,6 +392,21 @@ public class DMI_Simulator {
          * On a spring day evening, the temp can be between 6 - 16 degrees
          */
         temp = random.nextInt(10) + 6;
+
+        /**
+         * On a spring day afternoon, the wind can blow up till 7 ms
+         */
+        wind = random.nextInt(7);
+
+        /**
+         * On a spring day afternoon. it can rain up to 5 mm
+         */
+        if (rain){
+            rainMM = random.nextInt(5);
+        }
+/**
+ * SPRING DAY EVENING
+ */
         HashMap<WeatherTypes,Object> evening = daySection(temp.toString(), wind.toString(), cloudinessType, rainMM.toString(), "0");
         day.add(evening); // evening is added at index 2
 
