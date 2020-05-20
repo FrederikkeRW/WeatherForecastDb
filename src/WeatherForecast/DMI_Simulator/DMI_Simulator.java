@@ -120,14 +120,14 @@ public class DMI_Simulator {
         day.add(morning); // morning is added at index 0
 
         /**
-         * On a summer day afternoon, the temp can be between 14-35 degrees
+         * On a summer day afternoon, the temp can be between 14-38 degrees
          */
-        temp = random.nextInt(21) + 14;
+        temp = random.nextInt(24) + 14;
 
         /**
-         * On a summer afternoon, the wind can blow up till 11 ms
+         * On a summer afternoon, the wind can blow up till 3 ms
          */
-        wind = random.nextInt(11);
+        wind = random.nextInt(3);
 
         /**
          * On a summer day afternoon, it can rain up to 11 mm
@@ -230,15 +230,15 @@ public class DMI_Simulator {
         temp = random.nextInt(5) + 5;
 
         /**
-         * On a autumn day evening, the wind can blow up till 11 ms
+         * On a autumn day evening, the wind can blow up till 21 ms
          */
-        wind = random.nextInt(11);
+        wind = random.nextInt(21);
 
         /**
-         * On a autumn day evening, it can rain up to 11 mm
+         * On a autumn day evening, it can rain up to 16 mm
          */
         if (rain){
-            rainMM = random.nextInt(11);
+            rainMM = random.nextInt(16);
         }
 /**
  * AUTUMN DAY EVENING
