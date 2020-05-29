@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class DMI_Simulator {
     /**
-     * Returning a list of the weather forecast for today and the next 3 days.
+     * Returning a list of the weather forecast for 4 days: a summer, autumn, winter and spring day.
      * Each day contains a list of three different forecast, through out the day: Morning, afternoon and evening.
      * Each forecast contains:
      *      Temp:       c
@@ -20,14 +20,10 @@ public class DMI_Simulator {
     public static ArrayList<ArrayList> fourDaysWeatherForecast(){
         ArrayList<ArrayList> fourDays = new ArrayList<ArrayList>();
 
-        //fourDays.add(summerDay());
-        //fourDays.add(summerDayRandom());
-        //fourDays.add(summerDayRandom());
-        //fourDays.add(summerDayRandom());
-        fourDays.add(summerDayRandom());
-        fourDays.add(autumnDayRandom());
-        fourDays.add(winterDayRandom());
-        fourDays.add(springDayRandom());
+       fourDays.add(summerDayRandom());
+       fourDays.add(autumnDayRandom());
+       fourDays.add(winterDayRandom());
+       fourDays.add(springDayRandom());
 
         return fourDays;
     }
@@ -167,8 +163,6 @@ public class DMI_Simulator {
     }
 
 
-
-
     private static ArrayList<Map<WeatherTypes, Object>> autumnDayRandom(){
         ArrayList<Map<WeatherTypes, Object>> day = new ArrayList<Map<WeatherTypes, Object>>();
         Random random = new Random();
@@ -272,6 +266,7 @@ public class DMI_Simulator {
          */
         Integer temp = random.nextInt(15) - 10;
 
+
         /**
          * On a winter day morning, the wind can blow up till 8 ms
          */
@@ -285,7 +280,8 @@ public class DMI_Simulator {
         /**
          * On a winter day afternoon, the temp can be between -5 - 5 degrees
          */
-        temp = random.nextInt(10) - 5;
+         temp = random.nextInt(10) - 5;
+
 
         /**
          * On a winter day afternoon, the wind can blow up till 10 ms

@@ -71,7 +71,7 @@ public class DbAccess {
         return getValues(dmiTemp, sql);
     }
 
-    public static ArrayList<HashMap <String, Object>> getGameValues (String windValue, String tempValue, String snowValue, String rainValue){
+    public static ArrayList<HashMap <String, String>> getGameValues (String windValue, String tempValue, String snowValue, String rainValue){
         String sql = "SELECT GAME_NAME NAME, GAME_DESCRIPTION DESCRIPTION, WARNING WARNING FROM GAME_TARIFF " +
                 " WHERE " +
                 "    WIND_VALUE_FROM <= ? AND WIND_VALUE_TO >= ? " +
@@ -86,7 +86,7 @@ public class DbAccess {
 
     }
 
-    public static ArrayList<HashMap <String, Object>> getClothValues (String windValue, String tempValue, String snowValue, String rainValue){
+    public static ArrayList<HashMap <String, String>> getClothValues (String windValue, String tempValue, String snowValue, String rainValue){
         String sql = "SELECT CLOTH_NAME NAME, CLOTH_DESCRIPTION DESCRIPTION FROM CLOTH_TARIFF " +
                 " WHERE " +
                 "    WIND_VALUE_FROM <= ? AND WIND_VALUE_TO >= ? " +
@@ -150,9 +150,9 @@ public class DbAccess {
 
 
 
-    public static ArrayList<HashMap <String, Object>> getGamesAndCloth (String windValue, String tempValue, String snowValue, String rainValue, String sql){
+    public static ArrayList<HashMap <String, String>> getGamesAndCloth (String windValue, String tempValue, String snowValue, String rainValue, String sql){
         //System.out.println("getGames. windValue: "+windValue+", tempValue: "+tempValue+", snowValue: "+snowValue+", rainValue: " +rainValue);
-        ArrayList<HashMap <String, Object>> result = new ArrayList<HashMap<String, Object>>();
+        ArrayList<HashMap <String, String>> result = new ArrayList<HashMap<String, String>>();
 /*
         String sql = "SELECT GAME_NAME, GAME_DESCRIPTION, WARNING FROM GAME_TARIFF " +
                 "WHERE " +
@@ -190,13 +190,20 @@ public class DbAccess {
             rs = pstmt.executeQuery();
 
             while (rs != null && rs.next()){
-                HashMap<String, Object> values = new HashMap<String, Object>();
+                HashMap<String, String> values = new HashMap<String, String>();
                 values.put("NAME", rs.getString("NAME"));
                 values.put("DESCRIPTION", rs.getString("DESCRIPTION"));
                 //values.put("WARNING", rs.getBoolean("WARNING"));
 
+                /**
+                 * We get access to 3 columns in game table
+                 * We get access to 2 columns in cloth table
+                 */
                 if (rs.getMetaData().getColumnCount() == 3) {
-                    values.put("WARNING",rs.getBoolean("WARNING"));
+                    //System.out.println("rs: STRING "+rs.getString("WARNING"));
+                    //System.out.println("rs: boolean "+rs.getBoolean("WARNING"));
+
+                    values.put("WARNING",rs.getString("WARNING"));
                 }
 
                 result.add(values);

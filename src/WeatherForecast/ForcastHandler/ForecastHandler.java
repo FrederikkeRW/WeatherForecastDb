@@ -79,15 +79,14 @@ public class ForecastHandler {
              * We got all the values from the database
              * Now we can get game suggestions based on these values
              */
-            ArrayList<HashMap<String, Object>> morningGames = DbAccess.getGameValues(resultWindMorning.get("VALUE"), resultTempMorning.get("VALUE"), resultSnowMorning.get("VALUE"), resultRainMorning.get("VALUE"));
-            ArrayList<HashMap<String, Object>> afternoonGames = DbAccess.getGameValues(resultWindAfternoon.get("VALUE"), resultTempAfternoon.get("VALUE"), resultSnowAfternoon.get("VALUE"), resultRainAfternoon.get("VALUE"));
-            ArrayList<HashMap<String, Object>> eveningGames = DbAccess.getGameValues(resultWindEvening.get("VALUE"), resultTempEvening.get("VALUE"), resultSnowEvening.get("VALUE"), resultRainEvening.get("VALUE"));
+            ArrayList<HashMap<String, String>> morningGames = DbAccess.getGameValues(resultWindMorning.get("VALUE"), resultTempMorning.get("VALUE"), resultSnowMorning.get("VALUE"), resultRainMorning.get("VALUE"));
+            ArrayList<HashMap<String, String>> afternoonGames = DbAccess.getGameValues(resultWindAfternoon.get("VALUE"), resultTempAfternoon.get("VALUE"), resultSnowAfternoon.get("VALUE"), resultRainAfternoon.get("VALUE"));
+            ArrayList<HashMap<String, String>> eveningGames = DbAccess.getGameValues(resultWindEvening.get("VALUE"), resultTempEvening.get("VALUE"), resultSnowEvening.get("VALUE"), resultRainEvening.get("VALUE"));
 
 
-            ArrayList<HashMap<String, Object>> morningCloth = DbAccess.getClothValues(resultWindMorning.get("VALUE"), resultTempMorning.get("VALUE"), resultSnowMorning.get("VALUE"), resultRainMorning.get("VALUE"));
-            ArrayList<HashMap<String, Object>> afternoonCloth = DbAccess.getClothValues(resultWindAfternoon.get("VALUE"), resultTempAfternoon.get("VALUE"), resultSnowAfternoon.get("VALUE"), resultRainAfternoon.get("VALUE"));
-            ArrayList<HashMap<String, Object>> eveningCloth = DbAccess.getClothValues(resultWindEvening.get("VALUE"), resultTempEvening.get("VALUE"), resultSnowEvening.get("VALUE"), resultRainEvening.get("VALUE"));
-
+            ArrayList<HashMap<String, String>> morningCloth = DbAccess.getClothValues(resultWindMorning.get("VALUE"), resultTempMorning.get("VALUE"), resultSnowMorning.get("VALUE"), resultRainMorning.get("VALUE"));
+            ArrayList<HashMap<String, String>> afternoonCloth = DbAccess.getClothValues(resultWindAfternoon.get("VALUE"), resultTempAfternoon.get("VALUE"), resultSnowAfternoon.get("VALUE"), resultRainAfternoon.get("VALUE"));
+            ArrayList<HashMap<String, String>> eveningCloth = DbAccess.getClothValues(resultWindEvening.get("VALUE"), resultTempEvening.get("VALUE"), resultSnowEvening.get("VALUE"), resultRainEvening.get("VALUE"));
 
 
             /**
@@ -145,7 +144,14 @@ public class ForecastHandler {
             values = gameSuggestionHandler(morningGames);
             tableTypesMorning.put(TariffTableTypes.GAME_TARIFF,values);
 
-            values = clothSuggestionHandler(morningCloth);
+
+            boolean warning = false;
+            //System.out.println("morning values: " + values);
+            if ("TRUE".equals(values.get("WARNING"))){
+                //System.out.println("morning warning is true: ");
+                warning = true;
+            }
+            values = clothSuggestionHandler(morningCloth, warning);
             tableTypesMorning.put(TariffTableTypes.CLOTH_TARIFF,values);
 
 
@@ -191,8 +197,13 @@ public class ForecastHandler {
             values = gameSuggestionHandler(afternoonGames);
             tableTypesAfternoon.put(TariffTableTypes.GAME_TARIFF,values);
 
-            values = clothSuggestionHandler(afternoonCloth);
+            warning = false;
+            if ("TRUE".equals(values.get("WARNING"))){
+                warning = true;
+            }
+            values = clothSuggestionHandler(afternoonCloth, warning);
             tableTypesAfternoon.put(TariffTableTypes.CLOTH_TARIFF,values);
+
 
             /**
              * Putting temp, wind, rain, cloudiness evening values inside Hashmap
@@ -234,8 +245,12 @@ public class ForecastHandler {
             values = gameSuggestionHandler(eveningGames);
             tableTypesEvening.put(TariffTableTypes.GAME_TARIFF,values);
 
-            values = clothSuggestionHandler(eveningCloth);
-            tableTypesEvening.put(TariffTableTypes.CLOTH_TARIFF,values);
+            warning = false;
+            if ("TRUE".equals(values.get("WARNING"))){
+                warning = true;
+            }
+            values = clothSuggestionHandler(eveningCloth, warning);
+            tableTypesEvening.put(TariffTableTypes.CLOTH_TARIFF, values);
 
             /**
              * Adding the morning values from tableTypesMorning, as place 0, 1 and 2 in the array: dayForcasts
@@ -254,8 +269,33 @@ public class ForecastHandler {
         return fourDays;
     }
 
+    /**
+     * If we have a WARNING, we should print one of these 3 cloth suggestions
+     */
+    private static String getRandomClothForWarnings() {
+        //System.out.println("getRandomClothForWarnings INIT");
+        String randomCloth = "Wear whatever you want!";
+        Random r = new Random();
+        int randomClothForWarning = r.nextInt(3);
+        switch (randomClothForWarning){
+            case 0:
+                randomCloth = "Wear whatever you want!";
+                break;
 
-    private static HashMap<String,String> gameSuggestionHandler (ArrayList<HashMap<String, Object>> gameList){
+            case 1:
+                randomCloth = "You can wear your PJ's all day if you want!";
+                break;
+
+            case 2:
+                randomCloth = "Put on your slippers and rope. The weather is not for outside playing today! ";
+                break;
+        }
+        //System.out.println("getRandomClothForWarnings returns: "+randomCloth);
+        return randomCloth;
+    }
+
+
+    private static HashMap<String,String> gameSuggestionHandler (ArrayList<HashMap<String, String>> gameList){
         HashMap<String, String> gameSuggestion = new HashMap<String, String>();
 
         /**
@@ -263,16 +303,23 @@ public class ForecastHandler {
          * Return empty map.
          */
         if (gameList.isEmpty()){
+            System.out.println("ERROR: gameList is empty");
             return gameSuggestion;
         }
         /**
          * First loop, for finding warnings. If warning exist, show the first warning.
          */
         for (int i = 0; i < gameList.size(); i++){
-            HashMap<String, Object> row = gameList.get(i);
-            if ((boolean)row.get("WARNING")){
+            HashMap<String, String> row = gameList.get(i);
+            //System.out.println("row: "+ row);
+
+            if ("TRUE".equals(row.get("WARNING"))) {
+                //System.out.println("warning in row: ");
                 gameSuggestion.put("GAME_NAME" , row.get("NAME").toString());
                 gameSuggestion.put("GAME_DESCRIPTION", row.get("DESCRIPTION").toString());
+                gameSuggestion.put("WARNING", row.get("WARNING").toString());
+
+
                 return gameSuggestion;
             }
         }
@@ -287,7 +334,8 @@ public class ForecastHandler {
         return gameSuggestion;
     }
 
-    private static HashMap<String, String> clothSuggestionHandler (ArrayList<HashMap<String, Object>> clothList){
+    private static HashMap<String, String> clothSuggestionHandler (ArrayList<HashMap<String, String>> clothList, boolean warning){
+        //System.out.println("clothSuggesionHandler INIT: warning: "+ warning);
         HashMap<String, String> clothSuggestion = new HashMap<String, String>();
 
         /**
@@ -295,18 +343,26 @@ public class ForecastHandler {
          * Return empty map.
          */
 
-        if (clothList.isEmpty()){
-            return clothSuggestion;
+        if (warning) {
+            clothSuggestion.put("CLOTH_NAME", "Stay inside!");
+            clothSuggestion.put("CLOTH_DESCRIPTION", getRandomClothForWarnings());
+
+        } else if (clothList.isEmpty()){
+                System.out.println("ERROR: clostList is empty");
+                return clothSuggestion;
+
+        } else {
+
+            /**
+             * Return random cloth suggestion.
+             */
+            Random r = new Random();
+            int randomCloth = r.nextInt(clothList.size());
+            clothSuggestion.put("CLOTH_NAME", clothList.get(randomCloth).get("NAME").toString());
+            clothSuggestion.put("CLOTH_DESCRIPTION", clothList.get(randomCloth).get("DESCRIPTION").toString());
+
         }
-
-        /**
-         * Return random cloth suggestion.
-         */
-        Random r = new Random();
-        int randomCloth = r.nextInt(clothList.size());
-        clothSuggestion.put("CLOTH_NAME",clothList.get(randomCloth).get("NAME").toString());
-        clothSuggestion.put("CLOTH_DESCRIPTION", clothList.get(randomCloth).get("DESCRIPTION").toString());
-
+        //system.out.println("clothSuggesionHandler returns: " + clothSuggestion);
         return clothSuggestion;
     }
 
