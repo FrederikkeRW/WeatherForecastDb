@@ -18,14 +18,14 @@ public class WeatherSimulator {
      */
 
     public static ArrayList<ArrayList> fourSeasonsWeatherForecast(){
-        ArrayList<ArrayList> fourDays = new ArrayList<ArrayList>();
+        ArrayList<ArrayList> fourSeasons = new ArrayList<ArrayList>();
 
-       fourDays.add(summerDayRandom());
-       fourDays.add(autumnDayRandom());
-       fourDays.add(winterDayRandom());
-       fourDays.add(springDayRandom());
+       fourSeasons.add(summerDayRandom());
+       fourSeasons.add(autumnDayRandom());
+       fourSeasons.add(winterDayRandom());
+       fourSeasons.add(springDayRandom());
 
-        return fourDays;
+        return fourSeasons;
     }
     /*
     private static ArrayList<Map<WeatherTypes,Object>> summerDay(){
