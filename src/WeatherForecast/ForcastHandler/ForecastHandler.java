@@ -1,8 +1,8 @@
 package WeatherForecast.ForcastHandler;
 
-import WeatherForecast.DMI_Simulator.CloudinessTypes;
-import WeatherForecast.DMI_Simulator.DMI_Simulator;
-import WeatherForecast.DMI_Simulator.WeatherTypes;
+import WeatherForecast.WeatherSimulator.CloudinessTypes;
+import WeatherForecast.WeatherSimulator.WeatherSimulator;
+import WeatherForecast.WeatherSimulator.WeatherTypes;
 import WeatherForecast.Database.DbAccess;
 
 import java.util.ArrayList;
@@ -14,14 +14,14 @@ public class ForecastHandler {
     /**
      * Gets the forecast from DMI, and convertes the data, according to the diffenitions from the tariff tables
      */
-    public static ArrayList<ArrayList> fourDaysWeatherForecast(){
+    public static ArrayList<ArrayList> fourSeasonsWeatherForecast(){
 
         /**
-         * ArrayList of all four days.
+         * ArrayList of all four seasons.
          */
-        ArrayList<ArrayList> fourDays = new ArrayList<ArrayList>();
+        ArrayList<ArrayList> fourSeasons = new ArrayList<ArrayList>();
 
-        ArrayList<ArrayList> dmiData = DMI_Simulator.fourDaysWeatherForecast();
+        ArrayList<ArrayList> dmiData = WeatherSimulator.fourSeasonsWeatherForecast();
         for(int i = 0; i < dmiData.size(); i ++){
             ArrayList<HashMap<WeatherTypes,Object>> day = dmiData.get(i);
             /**
@@ -261,12 +261,12 @@ public class ForecastHandler {
             dayForcasts.add(tableTypesEvening);
 
             /**
-             * Adding the dayForcasts array, to the fourDays array.
+             * Adding the dayForcasts array, to the fourSeasons array.
              */
-            fourDays.add(dayForcasts);
+            fourSeasons.add(dayForcasts);
         }
 
-        return fourDays;
+        return fourSeasons;
     }
 
     /**

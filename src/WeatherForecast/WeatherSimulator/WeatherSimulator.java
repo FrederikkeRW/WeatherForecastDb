@@ -1,11 +1,11 @@
-package WeatherForecast.DMI_Simulator;
+package WeatherForecast.WeatherSimulator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class DMI_Simulator {
+public class WeatherSimulator {
     /**
      * Returning a list of the weather forecast for 4 days: a summer, autumn, winter and spring day.
      * Each day contains a list of three different forecast, through out the day: Morning, afternoon and evening.
@@ -17,7 +17,7 @@ public class DMI_Simulator {
      *      Snow:       cm
      */
 
-    public static ArrayList<ArrayList> fourDaysWeatherForecast(){
+    public static ArrayList<ArrayList> fourSeasonsWeatherForecast(){
         ArrayList<ArrayList> fourDays = new ArrayList<ArrayList>();
 
        fourDays.add(summerDayRandom());

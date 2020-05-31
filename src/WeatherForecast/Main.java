@@ -1,7 +1,5 @@
 package WeatherForecast;
 
-import WeatherForecast.DMI_Simulator.DMI_Simulator;
-import WeatherForecast.Database.DbTest;
 import WeatherForecast.ForcastHandler.ForecastHandler;
 
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ public class Main {
         System.out.println("List of four days: " + fourDays);
         */
 
-        ArrayList fourDaysWeatherForecast = ForecastHandler.fourDaysWeatherForecast();
+        ArrayList fourDaysWeatherForecast = ForecastHandler.fourSeasonsWeatherForecast();
         for (int i = 0; i < fourDaysWeatherForecast.size(); i++){
             System.out.println("Day "+ i +": "+ fourDaysWeatherForecast.get(i));
         }

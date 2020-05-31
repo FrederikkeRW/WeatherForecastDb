@@ -1,4 +1,4 @@
-package WeatherForecast.DMI_Simulator;
+package WeatherForecast.WeatherSimulator;
 
 public enum WeatherTypes {
     Temp,Wind,Cloudiness,Rain,Snow;

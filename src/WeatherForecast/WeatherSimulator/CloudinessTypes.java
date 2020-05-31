@@ -1,4 +1,4 @@
-package WeatherForecast.DMI_Simulator;
+package WeatherForecast.WeatherSimulator;
 
 public enum CloudinessTypes {
     CLOUDY ("Cloudy", "Cloudy, no sun", "A"),

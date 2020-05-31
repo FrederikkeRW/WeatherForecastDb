@@ -47,28 +47,28 @@ public class DbAccess {
     Get temperature values from tariff, based on DMI data
      */
 
-    public static HashMap<String,String> getTemperatureValues(int dmiTemp){
+    public static HashMap<String,String> getTemperatureValues(int temp){
         String sql =  "SELECT TEMP_VALUE VALUE,TEMP_TEXT TEXT,TEMP_DESCRIPTION DESCRIPTION FROM TEMP_TARIFF WHERE TEMP_FROM <= ? AND TEMP_TO >= ?";
 
-        return getValues(dmiTemp, sql);
+        return getValues(temp, sql);
     }
 
-    public static HashMap<String,String> getWindValues(int dmiTemp){
+    public static HashMap<String,String> getWindValues(int wind){
         String sql =  "SELECT WIND_VALUE VALUE, WIND_TEXT TEXT, WIND_DESCRIPTION DESCRIPTION FROM WIND_TARIFF WHERE WIND_FROM <= ? AND WIND_TO >= ?";
 
-        return getValues(dmiTemp, sql);
+        return getValues(wind, sql);
     }
 
-    public static HashMap<String,String> getRainValues(int dmiTemp){
+    public static HashMap<String,String> getRainValues(int rain){
         String sql =  "SELECT RAIN_VALUE VALUE, RAIN_TEXT TEXT, RAIN_DESCRIPTION DESCRIPTION FROM RAIN_TARIFF WHERE RAIN_FROM <= ? AND RAIN_TO >=?";
 
-        return getValues(dmiTemp, sql);
+        return getValues(rain, sql);
     }
 
-    public static HashMap<String,String> getSnowValues(int dmiTemp){
+    public static HashMap<String,String> getSnowValues(int snow){
         String sql =  "SELECT SNOW_VALUE VALUE, SNOW_TEXT TEXT, SNOW_DESCRIPTION DESCRIPTION FROM SNOW_TARIFF WHERE SNOW_FROM <= ? AND SNOW_TO >= ?";
 
-        return getValues(dmiTemp, sql);
+        return getValues(snow, sql);
     }
 
     public static ArrayList<HashMap <String, String>> getGameValues (String windValue, String tempValue, String snowValue, String rainValue){
@@ -102,7 +102,7 @@ public class DbAccess {
 
 
 
-    private static HashMap<String,String> getValues(int dmiTemp, String sql){
+    private static HashMap<String,String> getValues(int dbValue, String sql){
         HashMap<String,String> result = new HashMap<>();
 
         Connection conn = openDBConnection();
@@ -113,8 +113,8 @@ public class DbAccess {
             e.printStackTrace();
         }
         try {
-            pstmt.setInt(1,  dmiTemp);
-            pstmt.setInt(2,  dmiTemp);
+            pstmt.setInt(1,  dbValue);
+            pstmt.setInt(2,  dbValue);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -129,11 +129,11 @@ public class DbAccess {
                 2. if:  Handles size. We should only get one result back
              */
             if (rs.isClosed()){
-                throw new RuntimeException("Value " + dmiTemp +" does not exist in database, using this sql: "+ sql+"\n Please update table, to include this value.");
+                throw new RuntimeException("Value " + dbValue +" does not exist in database, using this sql: "+ sql+"\n Please update table, to include this value.");
             }
 
             if (rs.getFetchSize() > 1){
-                throw new RuntimeException("The database should only return one row. The value "+dmiTemp+" returns "+ rs.getFetchSize() + " in sql: "+ sql+". Please update table.");
+                throw new RuntimeException("The database should only return one row. The value "+dbValue+" returns "+ rs.getFetchSize() + " in sql: "+ sql+". Please update table.");
             }
 
             result.put("VALUE",rs.getString("VALUE"));
